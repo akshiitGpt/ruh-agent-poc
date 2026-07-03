@@ -7,6 +7,7 @@ import {
   users,
   installs,
   hasSuiteAccess,
+  suiteUrl,
 } from "@/lib/data";
 import { SuiteChat } from "@/components/suite/SuiteChat";
 
