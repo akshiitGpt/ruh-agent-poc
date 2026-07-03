@@ -22,7 +22,7 @@ export default async function PlatformLayout({
 
   return (
     <div data-theme="paper" className="atmosphere min-h-screen bg-bg">
-      <div className="mx-auto flex min-h-screen max-w-350">
+      <div className="flex min-h-screen">
         <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col overflow-y-auto border-r border-line bg-panel/60 px-4 py-5 backdrop-blur">
           <Link href="/" className="mb-6 flex items-center gap-2.5 px-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ink font-display text-sm font-bold text-bg">

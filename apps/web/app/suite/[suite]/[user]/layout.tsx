@@ -115,7 +115,7 @@ export default async function SuiteLayout({
 
   return (
     <div data-theme="control" className="atmosphere min-h-screen bg-bg">
-      <div className="mx-auto flex min-h-screen max-w-350">
+      <div className="flex min-h-screen">
         <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-panel/70 px-4 py-5 backdrop-blur">
           <a
             href={rootUrl()}
