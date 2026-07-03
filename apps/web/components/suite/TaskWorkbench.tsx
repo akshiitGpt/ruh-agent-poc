@@ -459,7 +459,7 @@ export function TaskWorkbench({
                         {n.kind}
                       </span>
                     </div>
-                    {i < task.nodes.length - 1 && (
+                    {task.nodes && i < task.nodes.length - 1 && (
                       <div
                         className={`mx-1 mb-8 h-px flex-1 ${live.nodeStates[i] === "done" ? "bg-ok" : "bg-line"}`}
                       />
