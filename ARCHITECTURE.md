@@ -206,6 +206,21 @@ ruh-agent-poc/
     docker-compose.yml   # postgres, redis, temporal dev server
 ```
 
+## 9.5 Agent builder, agentic gallery & orchestrator
+
+**Agent builder** — the meta-agent that creates suites (for the marketplace or a specific client). Six-stage pipeline, each stage gated on human approval and iterable via chat:
+
+1. **Requirements** — plain-language brief (+ attached context: API docs, brand tokens, a reference suite).
+2. **Plan** — structured task list (agent vs workflow, tools, schedules), integrations, platform wiring. Crucially the builder searches the **agentic gallery** first and reuses matches instead of building from scratch.
+3. **Design** — open-design-style canvas (github.com/nexu-io/open-design concept): every page of the suite as a linked mockup with flow arrows. Comment-mode editing — click any element, a floating input opens, request the change in place; the artifact updates live.
+4. **PRD & ERD** — generated from the approved plan + design; same iterate-then-approve loop.
+5. **Build** — a Pi coding agent works inside a **Daytona sandbox**; the suite assembles live in a preview pane (Lovable-style split: agent log left, running app right). Tweaks can be requested against the live sandbox.
+6. **Deploy** — image, subdomain reservation, JWT scopes, Temporal schedules, marketplace listing. Publish makes it installable org-wide.
+
+**Agentic gallery** — the registry of every agent/workflow the builder has produced, versioned and tagged. Components are suite-agnostic and reusable: the same "gather → condense → post" workflow pattern ships in Slack Suite and a client's Jira Suite. New builds register their tasks here on publish.
+
+**Orchestrator agent ("Ask Ruh")** — the dashboard-level counterpart of the per-suite copilot. One chat across every installed suite: status roll-ups ("what's the update on Linear?"), cross-suite queries ("any failed runs today?"), and remote triggering ("run the Slack standup") — it routes to the target suite's task through the same gateway `run_task` path, so chat-triggered runs land in the same runs tables and activity feeds. Hierarchy: orchestrator (dashboard, all suites) → suite copilot (one suite) → task workbench (one task).
+
 ## 10. Build order
 
 **Phase 1 — platform core:** Better Auth + orgs + invites + org switcher; ruh.ai dashboard shell with widget grid; suite registry; gateway with subdomain routing + JWT token exchange (`lvh.me` locally); profile/settings.

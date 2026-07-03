@@ -8,6 +8,7 @@ import {
   accessibleSuites,
 } from "@/lib/data";
 import { WidgetGrid, type DashboardData } from "@/components/platform/WidgetGrid";
+import { OrchestratorChat } from "@/components/platform/OrchestratorChat";
 
 export default async function DashboardPage() {
   const { user, org, role } = await getSession();
@@ -86,6 +87,11 @@ export default async function DashboardPage() {
         </h1>
       </header>
       <WidgetGrid data={data} />
+      <OrchestratorChat
+        suites={installed}
+        userId={user.id}
+        userInitials={user.initials}
+      />
     </div>
   );
 }

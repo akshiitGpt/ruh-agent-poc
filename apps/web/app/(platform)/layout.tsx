@@ -56,6 +56,28 @@ export default async function PlatformLayout({
             </Link>
           </nav>
 
+          {role === "admin" && (
+            <>
+              <p className="mt-7 mb-2 px-3 text-xs font-medium tracking-wide text-faint uppercase">
+                Build studio
+              </p>
+              <nav className="space-y-0.5">
+                <Link
+                  href="/builder"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
+                >
+                  <GlyphSquare>⚒</GlyphSquare> Agent builder
+                </Link>
+                <Link
+                  href="/gallery"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
+                >
+                  <GlyphSquare>▤</GlyphSquare> Agentic gallery
+                </Link>
+              </nav>
+            </>
+          )}
+
           <p className="mt-7 mb-2 px-3 text-xs font-medium tracking-wide text-faint uppercase">
             Agentic suites
           </p>

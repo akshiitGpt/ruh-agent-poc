@@ -46,9 +46,20 @@ session cookie need a real domain).
     an admin grant/revoke each *individual* installed suite per member (not
     just role-wide permissions). John starts with Linear + Slack but no
     GitHub — toggle it and his sidebar/dashboard update instantly, and
-    visiting `github-john.lvh.me:3000` directly shows an "Access restricted"
-    gate instead of the suite.
-11. **Auth boundaries** — visit `linear-john.lvh.me:3000` while signed in as
+    visiting the suite URL directly shows an "Access restricted" gate.
+12. **Ask Ruh (orchestrator)** — the chat bottom-right on the *dashboard*
+    spans every installed suite: "What's the update on Linear?", "Any failed
+    runs today?", or "Run the Slack standup now" — it routes to the right
+    suite's task and streams the run inline.
+13. **Agent builder** (admin, sidebar → Build studio) — the full
+    suite-creation pipeline, simulated end to end: requirements → structured
+    plan (with gallery reuse) → open-design-style canvas of the suite's pages
+    (click any element for a floating change request — try "make it purple")
+    → PRD & ERD → Lovable-style build in a Daytona sandbox → deployment
+    report → publish to marketplace.
+14. **Agentic gallery** — every agent/workflow ever built, reusable across
+    suites (Standup runner ships in Slack *and* the Jira draft).
+15. **Auth boundaries** — open another user's suite URL while signed in as
     Akshit, or sign out and open any suite URL.
 
 ### Theming intent
