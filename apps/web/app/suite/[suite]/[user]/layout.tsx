@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { getSession } from "@/lib/session";
 import {
   getSuite,
@@ -112,9 +113,17 @@ export default async function SuiteLayout({
 
   const automations = suite.tasks.filter((t) => t.schedule || t.trigger);
   const onDemand = suite.tasks.filter((t) => !t.schedule && !t.trigger);
+  const suiteTheme = {
+    "--accent": suite.hue,
+    "--accent-soft": `color-mix(in srgb, ${suite.hue} 15%, var(--panel))`,
+  } as CSSProperties;
 
   return (
-    <div data-theme="control" className="atmosphere min-h-screen bg-bg">
+    <div
+      data-theme="paper"
+      style={suiteTheme}
+      className="atmosphere min-h-screen bg-bg"
+    >
       <div className="flex min-h-screen">
         <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-panel/70 px-4 py-5 backdrop-blur">
           <a
@@ -242,7 +251,7 @@ function Gate({
 }) {
   return (
     <div
-      data-theme="control"
+      data-theme="paper"
       className="atmosphere flex min-h-screen items-center justify-center bg-bg px-6"
     >
       <div className="rise w-full max-w-md rounded-2xl border border-line bg-panel p-8 text-center">

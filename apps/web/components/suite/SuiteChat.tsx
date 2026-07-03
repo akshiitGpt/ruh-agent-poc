@@ -12,6 +12,8 @@ interface ChatMsg {
   chips?: string[];
 }
 
+type ChatView = "drawer" | "modal" | "panel";
+
 let msgId = 0;
 
 function matchTask(text: string, suite: Suite): Task | undefined {
@@ -71,6 +73,7 @@ export function SuiteChat({
   userInitials: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [view, setView] = useState<ChatView>("drawer");
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -80,7 +83,7 @@ export function SuiteChat({
   useEffect(() => () => stop(), []);
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [messages, open]);
+  }, [messages, open, view]);
 
   function stop() {
     if (timer.current) clearInterval(timer.current);
@@ -153,10 +156,25 @@ export function SuiteChat({
     }, 50);
   }
 
+  const shellClass =
+    view === "drawer"
+      ? "drawer-in fixed right-4 bottom-24 left-4 z-40 flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl sm:right-6 sm:left-auto sm:w-[380px]"
+      : view === "modal"
+        ? "drawer-in fixed inset-x-4 top-8 bottom-8 z-50 mx-auto flex w-auto max-w-3xl flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl"
+        : "drawer-in fixed inset-y-0 right-0 z-50 flex w-full max-w-[520px] flex-col overflow-hidden border-l border-line bg-panel shadow-2xl sm:my-3 sm:mr-3 sm:rounded-2xl sm:border";
+
   return (
     <>
+      {open && view !== "drawer" && (
+        <button
+          type="button"
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-[45] bg-black/25 backdrop-blur-[1px]"
+          aria-label="Close chat overlay"
+        />
+      )}
       {open && (
-        <div className="drawer-in fixed right-6 bottom-24 z-40 flex max-h-[70vh] w-[380px] flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl">
+        <div className={shellClass}>
           <header className="flex items-center gap-2.5 border-b border-line px-4 py-3">
             <span
               className="flex h-7 w-7 items-center justify-center rounded-lg font-display text-xs font-bold text-white"
@@ -172,13 +190,54 @@ export function SuiteChat({
                 chat triggers the same agents &amp; workflows
               </p>
             </div>
-            <button
-              onClick={() => setOpen(false)}
-              className="rounded p-1 text-xs text-faint hover:bg-panel2 hover:text-ink"
-              aria-label="Close chat"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-1">
+              {view !== "drawer" && (
+                <button
+                  type="button"
+                  onClick={() => setView("drawer")}
+                  className="flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-xs text-faint transition-colors hover:border-line hover:bg-panel2 hover:text-ink"
+                  aria-label="Return chat to compact view"
+                  title="Compact view"
+                >
+                  -
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setView("modal")}
+                className={`flex h-7 w-7 items-center justify-center rounded-md border text-[11px] transition-colors hover:border-line hover:bg-panel2 hover:text-ink ${
+                  view === "modal"
+                    ? "border-line bg-panel2 text-ink"
+                    : "border-transparent text-faint"
+                }`}
+                aria-label="Open chat as modal"
+                title="Open as modal"
+              >
+                ⤢
+              </button>
+              <button
+                type="button"
+                onClick={() => setView("panel")}
+                className={`flex h-7 w-7 items-center justify-center rounded-md border text-[11px] transition-colors hover:border-line hover:bg-panel2 hover:text-ink ${
+                  view === "panel"
+                    ? "border-line bg-panel2 text-ink"
+                    : "border-transparent text-faint"
+                }`}
+                aria-label="Open chat as right panel"
+                title="Open as right panel"
+              >
+                ▐
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-xs text-faint transition-colors hover:border-line hover:bg-panel2 hover:text-ink"
+                aria-label="Close chat"
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
           </header>
 
           <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto p-4">

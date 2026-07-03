@@ -17,6 +17,8 @@ interface ChatMsg {
   link?: { href: string; label: string };
 }
 
+type ChatView = "drawer" | "modal" | "panel";
+
 let mid = 0;
 
 function findSuite(q: string, suites: Suite[]): Suite | undefined {
@@ -80,6 +82,7 @@ export function OrchestratorChat({
   userInitials: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [view, setView] = useState<ChatView>("drawer");
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -89,7 +92,7 @@ export function OrchestratorChat({
   useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [messages, open]);
+  }, [messages, open, view]);
 
   const suggestions = [
     "What's the update on Linear?",
@@ -213,10 +216,25 @@ export function OrchestratorChat({
     });
   }
 
+  const shellClass =
+    view === "drawer"
+      ? "drawer-in fixed right-4 bottom-24 left-4 z-40 flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl sm:right-6 sm:left-auto sm:w-[400px]"
+      : view === "modal"
+        ? "drawer-in fixed inset-x-4 top-8 bottom-8 z-50 mx-auto flex w-auto max-w-3xl flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl"
+        : "drawer-in fixed inset-y-0 right-0 z-50 flex w-full max-w-[540px] flex-col overflow-hidden border-l border-line bg-panel shadow-2xl sm:my-3 sm:mr-3 sm:rounded-2xl sm:border";
+
   return (
     <>
+      {open && view !== "drawer" && (
+        <button
+          type="button"
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-[45] bg-black/25 backdrop-blur-[1px]"
+          aria-label="Close orchestrator chat overlay"
+        />
+      )}
       {open && (
-        <div className="drawer-in fixed right-6 bottom-24 z-40 flex max-h-[70vh] w-[400px] flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl">
+        <div className={shellClass}>
           <header className="flex items-center gap-2.5 border-b border-line px-4 py-3">
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-ink font-display text-xs font-bold text-bg">
               ر
@@ -227,13 +245,54 @@ export function OrchestratorChat({
                 orchestrates across {suites.map((s) => s.name.replace(" Suite", "")).join(" · ")}
               </p>
             </div>
-            <button
-              onClick={() => setOpen(false)}
-              className="rounded p-1 text-xs text-faint hover:bg-panel2 hover:text-ink"
-              aria-label="Close orchestrator chat"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-1">
+              {view !== "drawer" && (
+                <button
+                  type="button"
+                  onClick={() => setView("drawer")}
+                  className="flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-xs text-faint transition-colors hover:border-line hover:bg-panel2 hover:text-ink"
+                  aria-label="Return orchestrator chat to compact view"
+                  title="Compact view"
+                >
+                  -
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setView("modal")}
+                className={`flex h-7 w-7 items-center justify-center rounded-md border text-[11px] transition-colors hover:border-line hover:bg-panel2 hover:text-ink ${
+                  view === "modal"
+                    ? "border-line bg-panel2 text-ink"
+                    : "border-transparent text-faint"
+                }`}
+                aria-label="Open orchestrator chat as modal"
+                title="Open as modal"
+              >
+                ⤢
+              </button>
+              <button
+                type="button"
+                onClick={() => setView("panel")}
+                className={`flex h-7 w-7 items-center justify-center rounded-md border text-[11px] transition-colors hover:border-line hover:bg-panel2 hover:text-ink ${
+                  view === "panel"
+                    ? "border-line bg-panel2 text-ink"
+                    : "border-transparent text-faint"
+                }`}
+                aria-label="Open orchestrator chat as right panel"
+                title="Open as right panel"
+              >
+                ▐
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-xs text-faint transition-colors hover:border-line hover:bg-panel2 hover:text-ink"
+                aria-label="Close orchestrator chat"
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
           </header>
 
           <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto p-4">
