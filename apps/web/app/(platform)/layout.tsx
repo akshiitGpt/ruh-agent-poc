@@ -54,6 +54,18 @@ export default async function PlatformLayout({
             >
               <GlyphSquare>✦</GlyphSquare> Marketplace
             </Link>
+            <Link
+              href="/gallery"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
+            >
+              <GlyphSquare>▤</GlyphSquare> Agentic gallery
+            </Link>
+            <Link
+              href="/agents"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
+            >
+              <GlyphSquare>▣</GlyphSquare> My agents
+            </Link>
           </nav>
 
           {role === "admin" && (
@@ -67,12 +79,6 @@ export default async function PlatformLayout({
                   className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
                 >
                   <GlyphSquare>⚒</GlyphSquare> Agent builder
-                </Link>
-                <Link
-                  href="/gallery"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
-                >
-                  <GlyphSquare>▤</GlyphSquare> Agentic gallery
                 </Link>
               </nav>
             </>

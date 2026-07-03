@@ -59,7 +59,12 @@ session cookie need a real domain).
     report → publish to marketplace.
 14. **Agentic gallery** — every agent/workflow ever built, reusable across
     suites (Standup runner ships in Slack *and* the Jira draft).
-15. **Auth boundaries** — open another user's suite URL while signed in as
+15. **Standalone use** — any gallery item works outside a suite: "＋ Add to
+    my account" → it appears under **My agents**. Agents open as a
+    ChatGPT-style chat (conversations saved across reloads, tool-call chips
+    inline); workflows get a trigger page — inputs, live node rail, and a
+    persisted run history.
+16. **Auth boundaries** — open another user's suite URL while signed in as
     Akshit, or sign out and open any suite URL.
 
 ### Theming intent

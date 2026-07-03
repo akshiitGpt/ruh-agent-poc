@@ -219,6 +219,8 @@ ruh-agent-poc/
 
 **Agentic gallery** — the registry of every agent/workflow the builder has produced, versioned and tagged. Components are suite-agnostic and reusable: the same "gather → condense → post" workflow pattern ships in Slack Suite and a client's Jira Suite. New builds register their tasks here on publish.
 
+**Standalone use** — gallery items are also directly usable without a suite. Any user adds an item to their account (`user_gallery_installs` row); the platform then serves a generic surface for it: agents get a ChatGPT-style chat (threads in `conversations`/`messages`, same Pi session + tool wiring as inside a suite), workflows get a generic trigger page (input form from the manifest schema, live node states, per-user run history). Same runtime, same runs tables — a standalone run and a suite run differ only by `install_kind`. This makes the gallery a lightweight product surface of its own: one agent can be sold/used alone before it ever ships inside a suite.
+
 **Orchestrator agent ("Ask Ruh")** — the dashboard-level counterpart of the per-suite copilot. One chat across every installed suite: status roll-ups ("what's the update on Linear?"), cross-suite queries ("any failed runs today?"), and remote triggering ("run the Slack standup") — it routes to the target suite's task through the same gateway `run_task` path, so chat-triggered runs land in the same runs tables and activity feeds. Hierarchy: orchestrator (dashboard, all suites) → suite copilot (one suite) → task workbench (one task).
 
 ## 10. Build order
