@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSuite, runsFor, timeAgo } from "@/lib/data";
+import { getSuite, runsFor, timeAgo, suiteUrl } from "@/lib/data";
 import { StatusPill } from "@/components/StatusPill";
 
 export default async function SuiteOverviewPage({
@@ -7,7 +7,7 @@ export default async function SuiteOverviewPage({
 }: {
   params: Promise<{ suite: string; user: string }>;
 }) {
-  const { suite: suiteSlug } = await params;
+  const { suite: suiteSlug, user } = await params;
   const suite = getSuite(suiteSlug);
   if (!suite) return null;
   const recent = runsFor(suite.slug).slice(0, 5);
@@ -28,7 +28,7 @@ export default async function SuiteOverviewPage({
         {suite.tasks.map((t, i) => (
           <Link
             key={t.slug}
-            href={`/tasks/${t.slug}`}
+            href={suiteUrl(suite.slug, user, `/tasks/${t.slug}`)}
             className="rise group rounded-2xl border border-line bg-panel p-5 transition-all hover:-translate-y-0.5 hover:border-accent/60"
             style={{ animationDelay: `${80 + i * 70}ms` }}
           >
@@ -72,7 +72,7 @@ export default async function SuiteOverviewPage({
             return (
               <Link
                 key={r.id}
-                href={`/tasks/${r.task}`}
+                href={suiteUrl(suite.slug, user, `/tasks/${r.task}`)}
                 className="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-panel2"
               >
                 <span className="font-mono text-xs text-faint">{r.display}</span>

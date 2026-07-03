@@ -124,7 +124,10 @@ export default async function SuiteLayout({
             ← Back to dashboard
           </a>
 
-          <Link href="/" className="mb-6 flex items-center gap-2.5 px-1">
+          <Link
+            href={suiteUrl(suite.slug, owner.id)}
+            className="mb-6 flex items-center gap-2.5 px-1"
+          >
             <span
               className="flex h-9 w-9 items-center justify-center rounded-lg font-display text-base font-bold text-white"
               style={{ background: suite.hue }}
@@ -141,9 +144,19 @@ export default async function SuiteLayout({
             </span>
           </Link>
 
-          <SidebarGroup label="Tasks" tasks={onDemand} />
+          <SidebarGroup
+            label="Tasks"
+            tasks={onDemand}
+            suiteSlug={suite.slug}
+            userId={owner.id}
+          />
           {automations.length > 0 && (
-            <SidebarGroup label="Automations" tasks={automations} />
+            <SidebarGroup
+              label="Automations"
+              tasks={automations}
+              suiteSlug={suite.slug}
+              userId={owner.id}
+            />
           )}
 
           <div className="mt-auto border-t border-line pt-3">
@@ -188,9 +201,13 @@ export default async function SuiteLayout({
 function SidebarGroup({
   label,
   tasks,
+  suiteSlug,
+  userId,
 }: {
   label: string;
   tasks: { slug: string; name: string; kind: string; schedule?: string }[];
+  suiteSlug: string;
+  userId: string;
 }) {
   return (
     <div className="mb-5">
@@ -201,7 +218,7 @@ function SidebarGroup({
         {tasks.map((t) => (
           <Link
             key={t.slug}
-            href={`/tasks/${t.slug}`}
+            href={suiteUrl(suiteSlug, userId, `/tasks/${t.slug}`)}
             className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-panel2 hover:text-ink"
           >
             <span className="font-mono text-[10px] text-faint">

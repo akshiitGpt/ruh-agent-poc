@@ -518,7 +518,7 @@ export function suiteUrl(suite: string, user: string, path = "") {
 }
 
 export function rootUrl(path = "") {
-  return path;
+  return path || "/";
 }
 
 export function prettyHost(suite: string, user: string) {
