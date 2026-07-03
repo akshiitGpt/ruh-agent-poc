@@ -23,14 +23,16 @@ interface Convo {
 
 export function AgentChat({
   item,
+  userId,
   streamChunks,
   toolCalls,
 }: {
   item: GalleryItem;
+  userId: string;
   streamChunks: string[];
   toolCalls: ToolCallSpec[];
 }) {
-  const KEY = `ruh_convos_${item.id}`;
+  const KEY = `ruh_convos_${userId}_${item.id}`;
   const [convos, setConvos] = useState<Convo[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState("");

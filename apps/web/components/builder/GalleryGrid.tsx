@@ -1,27 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import type { GalleryItem } from "@/lib/builderData";
-import { getMyAgents, addMyAgent } from "@/lib/myAgents";
 
 export function GalleryGrid({ items }: { items: GalleryItem[] }) {
   const [filter, setFilter] = useState<"all" | "agent" | "workflow">("all");
   const [q, setQ] = useState("");
   const [toast, setToast] = useState<string | null>(null);
-  const [mine, setMine] = useState<string[]>([]);
-
-  useEffect(() => {
-    setMine(getMyAgents());
-  }, []);
-
-  function addToAccount(item: GalleryItem) {
-    setMine(addMyAgent(item.id));
-    setToast(
-      `✓ ${item.name} added to your account — ${item.kind === "agent" ? "chat with it" : "trigger it"} from My agents`
-    );
-    setTimeout(() => setToast(null), 3200);
-  }
 
   const shown = items.filter(
     (i) =>
@@ -88,38 +73,20 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
                 </span>
               ))}
             </div>
-            <div className="mt-auto border-t border-line pt-3">
-              <p className="mb-2.5 text-xs text-faint">
+            <div className="mt-auto flex items-center justify-between border-t border-line pt-3">
+              <p className="text-xs text-faint">
                 {item.usedIn.length > 0 ? (
                   <>Used in {item.usedIn.join(" · ")}</>
                 ) : (
                   "Not yet in a suite"
                 )}
               </p>
-              <div className="flex items-center gap-2">
-                {mine.includes(item.id) ? (
-                  <Link
-                    href={`/agents/${item.id}`}
-                    className="flex-1 rounded-lg bg-ink px-3 py-2 text-center text-xs font-semibold text-bg transition-opacity hover:opacity-85"
-                  >
-                    {item.kind === "agent" ? "Open chat →" : "Open runner →"}
-                  </Link>
-                ) : (
-                  <button
-                    onClick={() => addToAccount(item)}
-                    className="flex-1 rounded-lg border border-line bg-bg px-3 py-2 text-xs font-medium transition-colors hover:border-accent hover:text-accent"
-                  >
-                    ＋ Add to my account
-                  </button>
-                )}
-                <button
-                  onClick={() => reuse(item)}
-                  title="Reuse this component in an agent-builder plan"
-                  className="rounded-lg border border-line px-3 py-2 text-xs font-medium transition-colors hover:border-accent hover:text-accent"
-                >
-                  ↺ Builder
-                </button>
-              </div>
+              <button
+                onClick={() => reuse(item)}
+                className="rounded-lg border border-line px-3 py-1.5 text-xs font-medium transition-colors hover:border-accent hover:text-accent"
+              >
+                ↺ Reuse in builder
+              </button>
             </div>
           </div>
         ))}

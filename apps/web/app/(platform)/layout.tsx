@@ -4,6 +4,7 @@ import { getSession } from "@/lib/session";
 import { suites, suiteUrl, orgsForUser, accessibleSuites, installs } from "@/lib/data";
 import { OrgSwitcher } from "@/components/platform/OrgSwitcher";
 import { UserMenu } from "@/components/platform/UserMenu";
+import { MyAgentsSidebar } from "@/components/platform/MyAgentsSidebar";
 
 export default async function PlatformLayout({
   children,
@@ -22,7 +23,7 @@ export default async function PlatformLayout({
   return (
     <div data-theme="paper" className="atmosphere min-h-screen bg-bg">
       <div className="mx-auto flex min-h-screen max-w-350">
-        <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-panel/60 px-4 py-5 backdrop-blur">
+        <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col overflow-y-auto border-r border-line bg-panel/60 px-4 py-5 backdrop-blur">
           <Link href="/" className="mb-6 flex items-center gap-2.5 px-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ink font-display text-sm font-bold text-bg">
               ر
@@ -54,24 +55,12 @@ export default async function PlatformLayout({
             >
               <GlyphSquare>✦</GlyphSquare> Marketplace
             </Link>
-            <Link
-              href="/gallery"
-              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
-            >
-              <GlyphSquare>▤</GlyphSquare> Agentic gallery
-            </Link>
-            <Link
-              href="/agents"
-              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
-            >
-              <GlyphSquare>▣</GlyphSquare> My agents
-            </Link>
           </nav>
 
           {role === "admin" && (
             <>
               <p className="mt-7 mb-2 px-3 text-xs font-medium tracking-wide text-faint uppercase">
-                Build studio
+                Build studio · internal
               </p>
               <nav className="space-y-0.5">
                 <Link
@@ -79,6 +68,12 @@ export default async function PlatformLayout({
                   className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
                 >
                   <GlyphSquare>⚒</GlyphSquare> Agent builder
+                </Link>
+                <Link
+                  href="/gallery"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-panel2 hover:text-ink"
+                >
+                  <GlyphSquare>▤</GlyphSquare> Agentic gallery
                 </Link>
               </nav>
             </>
@@ -119,6 +114,8 @@ export default async function PlatformLayout({
               🔒 {restrictedCount} more installed — restricted by your admin
             </p>
           )}
+
+          <MyAgentsSidebar userId={user.id} />
 
           <div className="mt-auto border-t border-line pt-3">
             <UserMenu name={user.name} email={user.email} initials={user.initials} />

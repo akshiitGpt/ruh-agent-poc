@@ -20,7 +20,7 @@ export default async function MyAgentsPage() {
           trigger page with your run history.
         </p>
       </header>
-      <MyAgentsList />
+      <MyAgentsList userId={user.id} />
     </div>
   );
 }

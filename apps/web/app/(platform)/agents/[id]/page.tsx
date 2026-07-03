@@ -45,12 +45,14 @@ export default async function StandaloneItemPage({
       {item.kind === "agent" ? (
         <AgentChat
           item={item}
+          userId={user.id}
           streamChunks={content.streamChunks}
           toolCalls={content.toolCalls}
         />
       ) : (
         <WorkflowRunner
           item={item}
+          userId={user.id}
           nodes={content.nodes ?? []}
           fields={content.fields}
         />

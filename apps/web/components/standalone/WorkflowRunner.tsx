@@ -22,14 +22,16 @@ type NodeState = "idle" | "active" | "done";
 
 export function WorkflowRunner({
   item,
+  userId,
   nodes,
   fields,
 }: {
   item: GalleryItem;
+  userId: string;
   nodes: WorkflowNode[];
   fields: FieldSpec[];
 }) {
-  const KEY = `ruh_wfruns_${item.id}`;
+  const KEY = `ruh_wfruns_${userId}_${item.id}`;
   const [form, setForm] = useState<Record<string, string>>({});
   const [nodeStates, setNodeStates] = useState<NodeState[]>(nodes.map(() => "idle"));
   const [log, setLog] = useState<string[]>([]);

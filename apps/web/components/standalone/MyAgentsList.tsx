@@ -3,16 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { galleryItems } from "@/lib/builderData";
-import { getMyAgents, removeMyAgent } from "@/lib/myAgents";
+import { getMyAgents, removeMyAgent, onMyAgentsChange } from "@/lib/myAgents";
 
-export function MyAgentsList() {
+export function MyAgentsList({ userId }: { userId: string }) {
   const [ids, setIds] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setIds(getMyAgents());
+    setIds(getMyAgents(userId));
     setLoaded(true);
-  }, []);
+    return onMyAgentsChange(() => setIds(getMyAgents(userId)));
+  }, [userId]);
 
   const items = ids
     .map((id) => galleryItems.find((g) => g.id === id))
@@ -32,10 +33,10 @@ export function MyAgentsList() {
           no suite required.
         </p>
         <Link
-          href="/gallery"
+          href="/marketplace"
           className="inline-block rounded-lg bg-ink px-5 py-2.5 text-sm font-semibold text-bg"
         >
-          Browse the gallery →
+          Browse the marketplace →
         </Link>
       </div>
     );
@@ -60,7 +61,7 @@ export function MyAgentsList() {
               {item.kind === "workflow" ? "◫ workflow" : "◆ agent"}
             </span>
             <button
-              onClick={() => setIds(removeMyAgent(item.id))}
+              onClick={() => setIds(removeMyAgent(userId, item.id))}
               className="rounded p-1 text-xs text-faint hover:bg-err-soft hover:text-err"
               title="Remove from my account"
             >
